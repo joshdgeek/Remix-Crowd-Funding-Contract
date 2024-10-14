@@ -7,7 +7,6 @@ import {PriceLogic} from "../library/priceLogic.sol";
 error notOwner();
 contract crowdFund{
 
-    
     address public immutable i_owner;
     uint constant minimumDonation = 1e17; 
     address[] public listOfFunders; //lst of Donors
@@ -15,11 +14,12 @@ contract crowdFund{
 
     constructor(){
         i_owner = msg.sender; //Setting an initial wallet that has access to the withdraw function
+        
     }
 
 
     function fund() payable public{
-        require(msg.value >= minimumDonation, "not up to minimum donation");
+        require(PriceLogic.ConvertWeiToUSD(msg.value) >= minimumDonation, "not up to minimum donation");
         listOfFunders.push(msg.sender); //Adds a donor to the list
         addressToAmountFunded[msg.sender] += msg.value; //updates the amount donated by an address
     }
